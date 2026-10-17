@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: 249 249 247;
+  --card: 252 252 251;
+  --fg: 11 11 11;
+  --muted: 82 81 78;
+  --axis: 137 135 129;
+  --border: 225 224 217;
+  --accent: 42 120 214;
+  --positive: 0 99 0;
+  --negative: 208 59 59;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: 13 13 13;
+    --card: 26 26 25;
+    --fg: 240 239 236;
+    --muted: 195 194 183;
+    --axis: 137 135 129;
+    --border: 44 44 42;
+    --accent: 57 135 229;
+    --positive: 12 163 12;
+    --negative: 230 103 103;
+  }
+}
+
+html,
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: system-ui, -apple-system, 'Pretendard', 'Noto Sans KR', 'Segoe UI', sans-serif;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+input,
+select,
+textarea {
+  background: rgb(var(--card));
+  border: 1px solid rgb(var(--border));
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  width: 100%;
+  font-size: 16px; /* iOS/안드로이드 자동 확대 방지 */
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 1px;
+}

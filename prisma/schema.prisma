@@ -1,0 +1,59 @@
+// 가계부 (familymoneymany)
+// 단일 사용자, 로컬 SQLite. 배포 시엔 provider만 postgresql로 바꾸면 됩니다.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  occurredAt      DateTime
+  amount          Int
+  direction       String   // INCOME | EXPENSE | INVESTMENT | TRANSFER
+  bucket          String   // INCOME | CARD_SPEND | UTILITY | TAX | INVESTMENT | OTHER
+  category        String   @default("기타")
+  merchant        String?
+  account         String?
+  installment     Int      @default(0)
+  status          String   @default("APPROVED") // APPROVED | CANCELED | NEEDS_REVIEW
+  source          String   @default("MANUAL")   // NOTIFICATION | SMS | CSV | MANUAL | API
+  rawText         String?
+  dedupeKey       String?  @unique
+  canceledLinkId  String?
+  note            String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([occurredAt])
+  @@index([bucket, occurredAt])
+  @@index([status])
+}
+
+model CategoryRule {
+  id        String   @id @default(cuid())
+  keyword   String
+  matchType String   @default("merchant") // merchant | rawText | account
+  category  String
+  bucket    String
+  direction String   @default("EXPENSE")
+  priority  Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([active, priority])
+}
+
+model SavingsPlan {
+  id                        String   @id @default(cuid())
+  year                      Int      @unique
+  targetAmount              Int
+  includeInvestmentAsSaving Boolean  @default(false)
+  note                      String?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+}
