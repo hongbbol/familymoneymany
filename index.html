@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리집 경제공부</title>
+<meta name="description" content="주식·부동산 투자를 위한 매일 경제공부 루틴과 기록">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <h1>💰 우리집 경제공부</h1>
+    <p class="tagline">주식 · 부동산 투자를 위한 매일 30분~1시간 공부 루틴</p>
+  </div>
+</header>
+
+<nav class="tabs wrap" role="tablist" aria-label="메뉴">
+  <button class="tab active" data-tab="home" role="tab" aria-selected="true">🏠 홈</button>
+  <button class="tab" data-tab="routine" role="tab" aria-selected="false">⏰ 매일 루틴</button>
+  <button class="tab" data-tab="stock" role="tab" aria-selected="false">📈 주식 공부</button>
+  <button class="tab" data-tab="realestate" role="tab" aria-selected="false">🏢 부동산 공부</button>
+  <button class="tab" data-tab="resources" role="tab" aria-selected="false">📚 자료실</button>
+</nav>
+
+<main class="wrap">
+
+  <!-- ===================== 홈 / 대시보드 ===================== -->
+  <section id="panel-home" class="panel active" role="tabpanel">
+    <div class="today-card card">
+      <div class="today-head">
+        <div>
+          <div class="today-date" id="today-date"></div>
+          <h2 id="today-title">오늘의 루틴</h2>
+        </div>
+        <a class="btn primary" id="log-button" href="#" target="_blank" rel="noopener">✏️ 오늘 공부 기록하기</a>
+      </div>
+      <ol class="today-steps" id="today-steps"></ol>
+    </div>
+
+    <h2 class="section-title">나의 공부 현황</h2>
+    <div class="stats-grid">
+      <div class="stat card"><div class="stat-value" id="stat-total">–</div><div class="stat-label">총 공부 일수</div></div>
+      <div class="stat card"><div class="stat-value" id="stat-streak">–</div><div class="stat-label">연속 기록</div></div>
+      <div class="stat card"><div class="stat-value" id="stat-week">–</div><div class="stat-label">이번 주 기록</div></div>
+      <div class="stat card"><div class="stat-value" id="stat-terms">–</div><div class="stat-label">배운 용어</div></div>
+    </div>
+
+    <div class="progress-row">
+      <div class="card progress-card">
+        <div class="progress-head"><span>📈 주식 커리큘럼</span><span id="progress-stock-label">0/12주</span></div>
+        <div class="bar"><div class="bar-fill" id="progress-stock"></div></div>
+      </div>
+      <div class="card progress-card">
+        <div class="progress-head"><span>🏢 부동산 커리큘럼</span><span id="progress-realestate-label">0/12주</span></div>
+        <div class="bar"><div class="bar-fill" id="progress-realestate"></div></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">최근 공부 기록</h2>
+    <div id="log-timeline" class="timeline"></div>
+  </section>
+
+  <!-- ===================== 매일 루틴 ===================== -->
+  <section id="panel-routine" class="panel" role="tabpanel">
+    <h2 class="section-title">매일 30분~1시간, 이렇게 공부해요</h2>
+    <p class="lead">매일 같은 시간(예: 아침 기상 직후, 출퇴근길, 잠들기 전)에 하는 것이 핵심이에요.
+      부담 없이 <strong>뉴스 15분은 매일</strong>, 나머지는 요일별 주제로 나눠서 공부합니다.</p>
+
+    <div class="card routine-common">
+      <h3>☀️ 매일 공통 — 경제 뉴스 브리핑 (15분)</h3>
+      <ul>
+        <li><strong>5분</strong> — 경제신문 헤드라인 훑기 (한국경제·매일경제 또는 네이버 뉴스 경제면)</li>
+        <li><strong>7분</strong> — 가장 궁금한 기사 <strong>1개만</strong> 골라 깊이 읽기</li>
+        <li><strong>3분</strong> — 모르는 용어 <strong>1개</strong> 검색해서 뜻 정리 → 기록하기</li>
+      </ul>
+    </div>
+
+    <div class="routine-grid">
+      <div class="card day-card"><div class="day-badge stock-badge">월요일</div><h3>📈 주식의 날</h3>
+        <ul><li>주식 커리큘럼에서 이번 주 주제 공부 (20~30분)</li><li>관심 종목 1개 주가·뉴스 확인 (5~10분)</li></ul></div>
+      <div class="card day-card"><div class="day-badge re-badge">화요일</div><h3>🏢 부동산의 날</h3>
+        <ul><li>부동산 커리큘럼에서 이번 주 주제 공부 (20~30분)</li><li>관심 지역 1곳 실거래가·매물 확인 (5~10분)</li></ul></div>
+      <div class="card day-card"><div class="day-badge stock-badge">수요일</div><h3>📈 주식의 날</h3>
+        <ul><li>월요일 주제 이어서 공부하거나 체크 질문에 답해보기 (20~30분)</li><li>관심 종목 관찰 (5~10분)</li></ul></div>
+      <div class="card day-card"><div class="day-badge re-badge">목요일</div><h3>🏢 부동산의 날</h3>
+        <ul><li>화요일 주제 이어서 공부하거나 체크 질문에 답해보기 (20~30분)</li><li>관심 지역 관찰 (5~10분)</li></ul></div>
+      <div class="card day-card"><div class="day-badge review-badge">금요일</div><h3>🔄 복습의 날</h3>
+        <ul><li>이번 주 배운 용어·개념 다시 보기 (15분)</li><li>이번 주 시장에 무슨 일이 있었는지 한 줄 정리 (15분)</li></ul></div>
+      <div class="card day-card"><div class="day-badge weekend-badge">주말 (선택)</div><h3>📖 심화의 날</h3>
+        <ul><li>투자 책 읽기 (자료실의 추천 도서)</li><li>한 주 공부 기록 돌아보기</li></ul></div>
+    </div>
+
+    <div class="card tips-card">
+      <h3>💡 루틴을 지키는 4가지 요령</h3>
+      <ul>
+        <li><strong>시간을 고정하세요.</strong> "아침 7시" 처럼 매일 같은 시간에 하면 습관이 됩니다.</li>
+        <li><strong>작게 시작하세요.</strong> 바쁜 날은 뉴스 15분만 해도 성공입니다. 끊기지 않는 것이 더 중요해요.</li>
+        <li><strong>반드시 기록하세요.</strong> "오늘 공부 기록하기" 버튼으로 한 줄이라도 남기면 데이터가 쌓입니다.</li>
+        <li><strong>12주 후 돌아보세요.</strong> 커리큘럼을 마치면 기록을 보며 다음 12주 계획을 세워보세요.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== 주식 공부 ===================== -->
+  <section id="panel-stock" class="panel" role="tabpanel">
+    <h2 class="section-title">📈 주식 12주 커리큘럼</h2>
+    <p class="lead">월·수요일에 한 주제씩. 각 주차의 <strong>체크 질문에 스스로 답할 수 있으면</strong> 그 주는 통과입니다.
+      공부를 마친 주는 체크박스를 눌러 표시하세요. (체크는 이 기기에만 저장됩니다)</p>
+    <div id="curriculum-stock"></div>
+  </section>
+
+  <!-- ===================== 부동산 공부 ===================== -->
+  <section id="panel-realestate" class="panel" role="tabpanel">
+    <h2 class="section-title">🏢 부동산 12주 커리큘럼</h2>
+    <p class="lead">화·목요일에 한 주제씩. 각 주차의 <strong>체크 질문에 스스로 답할 수 있으면</strong> 그 주는 통과입니다.
+      공부를 마친 주는 체크박스를 눌러 표시하세요. (체크는 이 기기에만 저장됩니다)</p>
+    <div id="curriculum-realestate"></div>
+  </section>
+
+  <!-- ===================== 자료실 ===================== -->
+  <section id="panel-resources" class="panel" role="tabpanel">
+    <h2 class="section-title">📚 추천 자료</h2>
+
+    <h3 class="sub-title">매일 보는 사이트 · 앱</h3>
+    <div class="resource-grid">
+      <div class="card resource"><h4>네이버 증권</h4><p>주가·재무·뉴스를 한 곳에서. 관심 종목 등록해서 매일 확인하세요.</p></div>
+      <div class="card resource"><h4>DART (전자공시)</h4><p>기업의 공식 보고서(사업보고서·공시)를 보는 곳. 7주차부터 사용합니다.</p></div>
+      <div class="card resource"><h4>국토부 실거래가 공개시스템</h4><p>아파트가 실제로 얼마에 팔렸는지 공식 데이터로 확인.</p></div>
+      <div class="card resource"><h4>KB부동산</h4><p>시세·통계·주간 동향 리포트. 부동산 시장 흐름 파악에 필수.</p></div>
+      <div class="card resource"><h4>호갱노노 / 아실</h4><p>아파트 실거래가·공급 물량·인구 이동을 지도로 쉽게 보는 앱.</p></div>
+      <div class="card resource"><h4>한국은행 경제통계시스템(ECOS)</h4><p>기준금리·물가 등 핵심 경제지표의 원본 데이터.</p></div>
+    </div>
+
+    <h3 class="sub-title">초보 추천 도서 — 주식</h3>
+    <ul class="book-list card">
+      <li><strong>『주식투자 무작정 따라하기』</strong> (윤재수) — 계좌 개설부터 용어까지, 입문자용 교과서</li>
+      <li><strong>『전설로 떠나는 월가의 영웅』</strong> (피터 린치) — 생활 속에서 좋은 기업을 찾는 법</li>
+      <li><strong>『돈의 심리학』</strong> (모건 하우절) — 투자에서 심리가 왜 중요한지</li>
+      <li><strong>『현명한 투자자』</strong> (벤저민 그레이엄) — 가치투자의 고전 (3단계쯤에 도전)</li>
+    </ul>
+
+    <h3 class="sub-title">초보 추천 도서 — 부동산</h3>
+    <ul class="book-list card">
+      <li><strong>『부동산 상식사전』</strong> (백영록) — 계약·대출·세금 등 기초 상식 총정리</li>
+      <li><strong>『대한민국 부동산 투자』</strong> (김학렬/빠숑) — 입지 분석의 기본기</li>
+      <li><strong>『부동산 트렌드』</strong> (김경민, 매년 출간) — 데이터로 보는 시장 전망</li>
+    </ul>
+
+    <h3 class="sub-title">뉴스 · 영상</h3>
+    <ul class="book-list card">
+      <li><strong>경제신문 1개 구독</strong> — 한국경제 또는 매일경제 (종이/앱 어느 쪽이든)</li>
+      <li><strong>삼프로TV, 슈카월드</strong> — 출퇴근길에 듣기 좋은 경제 유튜브</li>
+      <li><strong>월급쟁이부자들TV, 부동산김사부TV</strong> — 부동산 기초 강의 영상</li>
+    </ul>
+
+    <p class="disclaimer">⚠️ 이 사이트는 공부 루틴을 돕기 위한 것으로, 특정 상품에 대한 투자 권유가 아닙니다.
+      모든 투자의 책임은 본인에게 있으며, 소액으로 연습하며 천천히 시작하세요.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>공부 기록은 <a id="repo-link" href="#" target="_blank" rel="noopener">GitHub 저장소</a>의
+      <code>data/logs.json</code>에 차곡차곡 쌓입니다. 이 페이지 주소를 가족·친구에게 공유해보세요!</p>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

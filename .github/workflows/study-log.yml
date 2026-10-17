@@ -1,0 +1,56 @@
+name: 공부 기록 저장
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: study-log
+  cancel-in-progress: false
+
+jobs:
+  save-log:
+    if: >-
+      contains(github.event.issue.labels.*.name, 'study-log') &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: logs.json에 기록 추가
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: python3 scripts/add_study_log.py
+
+      - name: 커밋 & 푸시
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/logs.json
+          git commit -m "공부 기록 추가 (#${ISSUE_NUMBER})"
+          for i in 1 2 3; do
+            git pull --rebase origin "${{ github.event.repository.default_branch }}" && git push && break
+            sleep 5
+          done
+
+      - name: 확인 댓글 남기고 이슈 닫기
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --body "✅ 기록이 저장되었어요! 잠시 후 웹사이트 대시보드에 반영됩니다. 오늘도 수고했어요 👏"
+          gh issue close "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY"
