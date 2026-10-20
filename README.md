@@ -10,12 +10,12 @@
 
 ## 로컬에서 실행
 
-Node.js 18.17 이상이 필요합니다.
+Node.js 18.17 이상과 Postgres DB가 필요합니다. 가장 쉬운 건 Neon에서 개발용 브랜치를 하나 만들어 그 주소를 쓰는 것이고, 로컬 Postgres도 됩니다.
 
 ```bash
 npm install
-cp .env.example .env      # 값 채우기 (APP_PASSWORD, AUTH_SECRET, INGEST_SECRET)
-npx prisma db push        # prisma/dev.db 생성
+cp .env.example .env      # DATABASE_URL, DATABASE_URL_UNPOOLED, 비밀값 3개 채우기
+npx prisma db push        # 테이블 생성
 npm run dev               # http://localhost:3000
 ```
 
@@ -26,17 +26,22 @@ npm run typecheck
 
 ## 휴대폰에서 쓰기 (배포)
 
-MacroDroid가 서버로 알림을 보내려면 인터넷에서 접속 가능한 주소가 필요합니다.
+MacroDroid가 서버로 알림을 보내려면 인터넷에서 접속 가능한 주소가 필요합니다. **Vercel(호스팅) + Neon(DB)** 둘 다 무료 플랜으로 충분합니다.
 
-**SQLite 그대로 쓰기 (가장 간단)** — 디스크가 유지되는 서버(Fly.io 볼륨, Railway 볼륨, 집 PC/NAS + Cloudflare Tunnel 등)에서 `npm run build && npm start`. `DATABASE_URL`을 영구 디스크 경로로 지정하세요.
+1. [vercel.com](https://vercel.com)에 GitHub 계정으로 가입 → **Add New… → Project** → 이 저장소(`familymoneymany`) **Import**
+   - 이 단계에서 바로 Deploy 하지 말고, 먼저 아래 2~3을 하세요. (먼저 눌러서 실패해도 괜찮습니다. 2~3 후 다시 배포하면 됩니다.)
+2. 프로젝트의 **Storage** 탭 → **Create Database** → **Neon**(Serverless Postgres) 선택 → 지역은 가까운 곳(예: Singapore) → 연결
+   - `DATABASE_URL`, `DATABASE_URL_UNPOOLED`가 환경변수에 자동으로 들어갑니다.
+3. **Settings → Environment Variables**에 세 개 추가
+   - `APP_PASSWORD` — 로그인 비밀번호
+   - `AUTH_SECRET` — 32자 이상 무작위 문자열
+   - `INGEST_SECRET` — 무작위 문자열 (MacroDroid에 넣을 토큰)
+   - 무작위 문자열은 비밀번호 생성기로 만들거나 `openssl rand -hex 24`
+4. **Deployments → Redeploy**. 빌드 때 `vercel-build` 스크립트가 테이블까지 자동으로 만듭니다.
+5. 폰 크롬에서 `https://<프로젝트>.vercel.app` 접속 → 메뉴 → **홈 화면에 추가**
+6. [docs/MACRODROID.md](docs/MACRODROID.md)대로 자동 입력 설정. 보낼 주소는 앱 **설정** 화면 맨 아래에 나옵니다.
 
-**Vercel + Neon(무료 Postgres)** — Vercel은 파일이 유지되지 않으므로 DB를 Postgres로 바꿉니다.
-1. [Neon](https://neon.tech)에서 DB 생성 후 연결 문자열 복사
-2. `prisma/schema.prisma`의 `provider = "sqlite"`를 `"postgresql"`로 변경
-3. Vercel에 저장소를 연결하고 환경변수 `DATABASE_URL`, `APP_PASSWORD`, `AUTH_SECRET`, `INGEST_SECRET` 설정
-4. Build Command: `prisma generate && prisma db push && next build`
-
-배포 후 폰 크롬에서 주소를 열고 메뉴 → **홈 화면에 추가**. 이어서 [docs/MACRODROID.md](docs/MACRODROID.md)대로 자동 입력을 설정하세요.
+> 집 PC 같은 자체 서버에 SQLite로 올리고 싶다면 `prisma/schema.prisma`의 provider를 `"sqlite"`로 바꾸고 `directUrl` 줄을 지운 뒤 `DATABASE_URL="file:./dev.db"`로 쓰면 됩니다.
 
 ## 보안
 
@@ -54,7 +59,7 @@ app/api/transactions      내역 CRUD, 문자 붙여넣기
 lib/parser/               카드/은행 메시지 파서 + 기본 분류 규칙
 lib/ingest.ts             파싱 → 사용자 규칙 → 취소 상계 → 저장
 lib/summary.ts            월 집계, 저축 플랜 진행 계산
-prisma/schema.prisma      Transaction, CategoryRule, SavingsPlan
+prisma/schema.prisma      Transaction, CategoryRule, SavingsPlan (Postgres)
 ```
 
 ## 다음에 할 만한 것

@@ -1,13 +1,14 @@
-// 가계부 (familymoneymany)
-// 단일 사용자, 로컬 SQLite. 배포 시엔 provider만 postgresql로 바꾸면 됩니다.
+// 가계부 (familymoneymany) — 단일 사용자, Postgres(Neon).
+// 변수 이름은 Vercel의 Neon 연동이 자동으로 넣어주는 이름과 같습니다.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Transaction {
